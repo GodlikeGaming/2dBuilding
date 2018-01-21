@@ -14,26 +14,33 @@ public class imageWheel : MonoBehaviour {
 	//polyImage[] polyImages;
 	LinkedList<polyImage> pImages;
 
-	public Texture rockTile;
+	public Texture2D rockTile;
 	public Sprite s_rockTile;
-	public Texture grass;
+	public Texture2D grass;
 	public Sprite s_grass;
 
 	private int edgesIndex = 0;
 	private int[] edges;
+
+
+	public Material m_rock;
+	public Material m_grass;
+
 	public struct polyImage
 	{
-		public polyImage(int _sides, Texture _sprite, GameObject _obj)
+		public polyImage(int _sides, Texture2D _sprite, GameObject _obj, Material _mat)
 		{
 			sides = _sides;
 			obj = _obj;
 			sprite = _sprite;
-
-			//obj.GetComponent<Image>().sprite = 
+			Sprite temp = Sprite.Create(_sprite, obj.GetComponent<Image>().sprite.rect, obj.GetComponent<Image>().sprite.pivot);
+			obj.GetComponent<Image>().sprite = temp;
+			mat = _mat;
 		}
 		int sides;
 		public Texture sprite;
 		public GameObject obj;
+		public Material mat;
 
 	}
 	// Use this for initialization
@@ -47,7 +54,7 @@ public class imageWheel : MonoBehaviour {
 		pImages = new LinkedList<polyImage> ();
 		for (int i = 0; i < 8; i++) {
 			GameObject temp = Instantiate (Image, new Vector2 (0, 0), Quaternion.identity, transform) as GameObject;
-			pImages.AddFirst(new polyImage (edges[i], (edges[i] > 5 ? grass : rockTile), temp));
+			pImages.AddFirst(new polyImage (edges[i], (edges[i] > 5 ? grass : rockTile), temp, (edges[i] > 5 ? m_grass : m_rock)));
 			edgesIndex++;
 		}
 	}
@@ -72,7 +79,7 @@ public class imageWheel : MonoBehaviour {
 	public polyImage Push()
 	{
 		GameObject temp = Instantiate (Image, new Vector2 (0, 0), Quaternion.identity, transform) as GameObject;
-		pImages.AddLast(new polyImage (edges[edgesIndex], (edges[edgesIndex] > 5 ? grass : rockTile), temp));
+		pImages.AddLast(new polyImage (edges[edgesIndex], (edges[edgesIndex] > 5 ? grass : rockTile), temp, (edges[edgesIndex] > 5 ? m_grass : m_rock)));
 		edgesIndex++;
 		return pImages.First.Value;
 	}

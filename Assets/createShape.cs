@@ -40,7 +40,7 @@ public class createShape : MonoBehaviour {
 		}
 		createGameObject ();
 
-		myMaterial.color = color;
+		//myMaterial.color = color;
 		initialized = true;
 	}
 	void Update ()
@@ -75,7 +75,7 @@ public class createShape : MonoBehaviour {
 				rb.sharedMaterial = rbMaterial;
 			}
 			MeshRenderer MR = myObject [x].AddComponent<MeshRenderer> ();
-			myMaterial.mainTexture = sprite;
+			//myMaterial.mainTexture = sprite;
 			MR.material = myMaterial;
 			MR.sortingLayerName = "foreground";
 			MR.sortingOrder = 0;

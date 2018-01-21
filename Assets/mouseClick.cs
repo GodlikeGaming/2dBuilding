@@ -46,7 +46,7 @@ public class mouseClick : MonoBehaviour {
 		{
 			FindObjectOfType<imageWheel> ().Pop ();
 			imageWheel.polyImage pImage = FindObjectOfType<imageWheel> ().Push ();
-			EndFigure (pImage.sprite);
+			EndFigure (pImage.mat);
 			points.Clear ();
 			foreach (GameObject obj in mouseClickPoints) {
 				Destroy (obj);
@@ -59,7 +59,7 @@ public class mouseClick : MonoBehaviour {
 		edgeAmountText.text = points.Count + " of " + amountOfEdgesAllowed;
 	}
 
-	void EndFigure (Texture sprite)
+	void EndFigure (Material mat)
 	{
 		Vector2 center = GetCenterPoint ();
 		Vector2[] ps = points.ToArray ();
@@ -70,11 +70,13 @@ public class mouseClick : MonoBehaviour {
 		float area = Area (ps);
 		//Debug.Log (area);
 		GameObject temp = Instantiate (polygon, center, Quaternion.identity) as GameObject;
+		temp.GetComponent<createShape> ().myMaterial = mat;
 		temp.GetComponent<createShape> ().shapePoints = ps;
-		temp.GetComponent<createShape> ().withRigidBody = true;
+		if (!mat.name.Equals ("rock")) {
+			temp.GetComponent<createShape> ().withRigidBody = true;
+		}
 		temp.GetComponent<createShape> ().rbMass = area;
 		temp.GetComponent<createShape> ().rbMaterial = physMaterial;
-		temp.GetComponent<createShape> ().sprite = sprite;
 		temp.GetComponent<createShape> ().Initialize ();
 	}
 
